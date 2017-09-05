@@ -13,7 +13,7 @@ public class GenericPost {
     public void PostEndPoint(String endpoint) {
         DataStore dataStore = DataStoreFactory.getScenarioDataStore();
         HttpResponse<String> httpResponse;
-        String url = "http://localhost:3000/" + endpoint;
+        String url = "http://192.168.99.100:3000/" + endpoint;
         Gauge.writeMessage(url);
         try {
             httpResponse = Unirest.post(url)
@@ -26,7 +26,39 @@ public class GenericPost {
             dataStore.put("httpResponseCode", httpResponseCode);
             String httpResponseStatusText = httpResponse.getStatusText();
             dataStore.put("httpResponseStatusText", httpResponseStatusText);
-         //   Gauge.writeMessage(httpResponse.getBody());
+            String httpResponseDate = httpResponse.getHeaders().get("Date").get(0);
+            dataStore.put("httpResponseDate", httpResponseDate);
+            if (httpResponse.getBody() != null)
+                Gauge.writeMessage(httpResponse.getBody());
+            Gauge.writeMessage(httpResponseStatusText);
+
+        }
+        catch (UnirestException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Step("Post to the <endpoint> endpoint with <text>")
+    public void PostEndPointWithParameters(String endpoint, String text) {
+        DataStore dataStore = DataStoreFactory.getScenarioDataStore();
+        HttpResponse<String> httpResponse;
+        String url = "http://192.168.99.100:3000/" + endpoint;
+        Gauge.writeMessage(url);
+        try {
+            httpResponse = Unirest.post(url)
+                    .header("Content-Type", "application/json")
+                    .header("Accept", "*/*")
+                    .body(String.format("%s", text))
+                    .asString();
+            dataStore.put("httpResponse", httpResponse);
+            Integer httpResponseCode = httpResponse.getStatus();
+            dataStore.put("httpResponseCode", httpResponseCode);
+            String httpResponseStatusText = httpResponse.getStatusText();
+            dataStore.put("httpResponseStatusText", httpResponseStatusText);
+            String httpResponseDate = httpResponse.getHeaders().get("Date").get(0);
+            dataStore.put("httpResponseDate", httpResponseDate);
+            if (httpResponse.getBody() != null)
+                Gauge.writeMessage(httpResponse.getBody());
             Gauge.writeMessage(httpResponseStatusText);
 
         }

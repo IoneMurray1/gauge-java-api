@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkyTechnicalTest-ImenderRehal</title>
+<link rel="stylesheet" href="https://stackedit.io/res-min/themes/base.css" />
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body><div class="container"><h1 id="sky-technical-test-imender-rehal">Sky Technical Test - Imender Rehal</h1>
+
+
+
+<h2 id="part-1-setup">Part 1 - Setup</h2>
+
+<p>Setup for straight forward, with the following changes and workarounds:</p>
+
+<ol>
+<li>Enable hardware virtualisation in Bios in order to get Docker running</li>
+<li>Unable to point to localhost on windows because of this issue: <br>
+<a href="https://blog.sixeyed.com/published-ports-on-windows-containers-dont-do-loopback/">https://blog.sixeyed.com/published-ports-on-windows-containers-dont-do-loopback/</a> </li>
+</ol>
+
+<p>Workaround was to use the docker ip in the address and change the api calls to see the tests running and debug them.</p>
+
+<h2 id="part-2-documentation-review">Part 2 - Documentation Review </h2>
+
+<p>The following needs correcting in the API documentation:</p>
+
+<ol>
+<li><strong>/unauthorized</strong> - This route is duplicated and one of them should be removed</li>
+<li><strong>Get/no_response</strong> – Response should be ‘<em>Status 200 OK</em>’ and not ‘<em>Status 200 No Content</em>’</li>
+<li><strong>Post/Bad_request</strong>  - documentation text should be “This url will return you a <em>400 Bad Request</em> response code when you try to do a POST request and return some sample json” and not “This url will return you a <em>503 Gateway timeout</em> response code when you try to do a POST request and return some sample json”</li>
+<li><strong>Get/forbidden</strong> – Response should be ‘<em>Status 200 OK</em>’ and not ‘<em>Status 200 Forbidden</em>’</li>
+<li><strong>Get/gateway_timeout</strong> – Response should be ‘<em>Status 200 OK’</em> and not ‘<em>Status 200 Gateway timeout</em>’</li>
+<li><strong>Gateway_timeout</strong> - The http code for Gateway timeout is 504. For 503 it’s Service Unavailable. Which one is part of the requirements? If it’s Gateway_timeout then any references to code 503 should be updated to 504. If it’s Service Unavailable that is part of the requirements, then Gateway_timeout route needs to be removed and/or replaced with Service_unavailabe route to represent this</li>
+<li><strong>/madeup</strong>  - For consistency, this route is missing the available methods GET</li>
+</ol>
+
+<h2 id="part-3-exploring-the-api">Part 3 - Exploring the API</h2>
+
+<p><strong>Get/last</strong> - When hitting the last route to retrieve the date/time for the latest POST (<a href="http://localhost:3000/unauthorized/last">http://localhost:3000/unauthorized/last</a>) , the server time does not factor in daylight savings. For example a call made at 2017-09-02T10:57:54Z is showing as 2017-09-02T09:57:54Z</p>
+
+<p>Get/last can actually be called by the api route followed by any character. for example <a href="http://localhost:3000/gateway_timeout/asdlksmflsmdfsd">http://localhost:3000/gateway_timeout/asdlksmflsmdfsd</a> returns the same response as <a href="http://localhost:3000/gateway_timeout/last">http://localhost:3000/gateway_timeout/last</a> - requires further questions and investigation</p>
+
+<p><strong>Post/gateway_timeout</strong> - response code is 503 Service Unavailable and not 503 Gateway timeout as the documentation states. The documentation should be updated to represent this route if it’s part of the requirements, and not 504 gateway timeout</p>
+
+<p><strong>Post/unauthorized</strong> - The response received includes receivedRequest entity as follows which is not included in the documentation:</p>
+
+<pre><code>{ "unauthorised": [ { "statusCode": 401, "error": "Unauthorized", "message": "Invalid token", "attributes": { "error": "Invalid token" } }, { "receivedRequest": [ { "test": 123 } ] } ] }
+</code></pre>
+
+<p><strong>Get/unauthorized/last</strong> - the response returned includes mediaTypeUsed and  bodyReceived entities which are not included in the documentation:</p>
+
+<pre><code>{"unauthorized": [{"lastUpdated": "2017-09-03T15:45:01Z"}, {"mediaTypeUsed": "application/json","bodyReceived": {"test": 123}}]}
+</code></pre>
+
+<p><strong>Additional scenarios tested:</strong> <br>
+1. POST - Modified request body to include additional digits - valid <br>
+2. POST - Modified request body to include additional chars - valid <br>
+3. POST - with blank request - valid (no validation included) - valid <br>
+4. Tested with invalid URLs - 404 not found <br>
+5. POST - with different message body types, text, text/plain, application/json and application/javascript - valid</p>
+
+<h2 id="part-4-automation-tests">Part 4 - Automation Tests</h2>
+
+<ul>
+<li>Removed Asserions.java - duplicate method was causing validation <br>
+errors when running tests</li>
+<li>Fixed failing tests - BadRequest and MadeUp</li>
+<li>Added additional test to InternalServerError</li>
+<li>Implemented assertion to compare the time of the post to the time in the get/last </li>
+<li>Implemented assertion to compare the body text in the post and get/last response</li>
+<li>Implemented assertion to compare the format used in the post and get/last response</li>
+<li>Added data table to post  and retrieve the same data in get/last response</li>
+<li>Added context steps to do a health check of API</li>
+</ul>
+
+<h2 id="part-5-further-testing">Part 5 - Further Testing</h2>
+
+<ul>
+<li>Post/unauthorised - Assert response body which includes additional data including the request body</li>
+<li>POST - with different message body types, text, text/plain, application/json and application/javascript - valid</li>
+<li>POST - with blank data in the message body </li>
+<li>Post/unauthorised - Post with valid authorisation headers/token</li>
+</ul></div></body>
+</html>
