@@ -13,7 +13,7 @@ public class GenericPost {
     public void PostEndPoint(String endpoint) {
         DataStore dataStore = DataStoreFactory.getScenarioDataStore();
         HttpResponse<String> httpResponse;
-        String url = "http://192.168.99.100:3000/" + endpoint;
+        String url = "http://localhost:3000/" + endpoint;
         Gauge.writeMessage(url);
         try {
             httpResponse = Unirest.post(url)
@@ -42,7 +42,7 @@ public class GenericPost {
     public void PostEndPointWithParameters(String endpoint, String text) {
         DataStore dataStore = DataStoreFactory.getScenarioDataStore();
         HttpResponse<String> httpResponse;
-        String url = "http://192.168.99.100:3000/" + endpoint;
+        String url = "http://localhost:3000/" + endpoint;
         Gauge.writeMessage(url);
         try {
             httpResponse = Unirest.post(url)

@@ -13,7 +13,7 @@ public class GenericGet {
     public void GetEndPoint(String endpoint) {
         DataStore dataStore = DataStoreFactory.getScenarioDataStore();
         HttpResponse<JsonNode> httpResponse;
-        String url = "http://192.168.99.100:3000/" + endpoint;
+        String url = "http://localhost:3000/" + endpoint;
         try {
             httpResponse = Unirest.get(url)
                     .header("content-type", "application/json")
@@ -47,7 +47,7 @@ public class GenericGet {
     public void justGetEndPoint(String endpoint) {
         DataStore dataStore = DataStoreFactory.getScenarioDataStore();
         HttpResponse<String> httpResponse;
-        String url = "http://192.168.99.100:3000/" + endpoint;
+        String url = "http://localhost:3000/" + endpoint;
         Gauge.writeMessage(url);
         try {
             httpResponse = Unirest.get(url)
