@@ -22,7 +22,7 @@ Forbidden is returned when doing a POST to the /forbidden endpoint
 
 * Post to the "forbidden" endpoint
 * Then the response will be "Forbidden"
-* The response code should be "403"
+* The response code should be "401"
 
 OK is returned when doing a GET to the /forbidden endpoint
 ----------------------------------------------------------------

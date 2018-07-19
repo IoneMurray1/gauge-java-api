@@ -22,12 +22,11 @@ No Response is returned when doing a POST to the /no_response endpoint
 
 * Post to the "no_response" endpoint
 * Then the response will be "No Content"
-* The response code should be "204"
 
 OK is returned when doing a GET to the /no_response endpoint
 ------------------------------------------------------------
 
-* Get to the "no_response" endpoint
+* Get to the "noresponse" endpoint
 * Then the response will be "OK"
 * The response code should be "200"
 
