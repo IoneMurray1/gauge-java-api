@@ -8,7 +8,8 @@ Every heading in this file denotes a scenario. Every bulleted point denotes a st
 |--|----------------------|
 |1 |{\"test\":123}        |
 |2 |{\"test\":"1234abc&&"}|
-
+|3 |{\"test\":"Abc"}      |
+|4 |{\"test\":"^&*("}     |
 
 * Get to the "manage/health" endpoint
 * Then the response will be "OK"
@@ -22,7 +23,7 @@ OK is returned when doing a GET to the /internal_server_error endpoint
 * The response code should be "200"
 
 Internal Server Error is returned when hitting the /internal_server_error endpoint
-----------------------------------------------------------------------------------
+// Complete this test
 
 
 Details of the last response is returned when doing a GET to /internal_server_error/last endpoint

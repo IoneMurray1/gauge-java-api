@@ -46,10 +46,6 @@ public class Assertions {
     @Step("The body text returned should be <bodyText>")
     public void AssertBodyReceived(String bodyText)
     {
-        DataStore dataStore = DataStoreFactory.getScenarioDataStore();
-        String bodyReceived = (String) dataStore.get("bodyReceived");
-
-        Assert.assertEquals(bodyText, bodyReceived);
+        Assert.fail("Undefined step");
     }
-
 }

@@ -29,13 +29,3 @@ OK is returned when doing a GET to the /no_response endpoint
 * Get to the "noresponse" endpoint
 * Then the response will be "OK"
 * The response code should be "200"
-
-Details of the last response is returned when doing a GET to /no_response/last endpoint
----------------------------------------------------------------------------------------
-
-* Post to the "no_response" endpoint with <text>
-* Then the response will be "No Content"
-* Retrieve the latest post details from the "no_response/last" endpoint
-* The last updated time returned should be equal to the posted time
-* The media type returned should be "application/json"
-* The body text returned should be <text>
