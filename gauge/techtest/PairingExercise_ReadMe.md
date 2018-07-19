@@ -25,3 +25,4 @@ Part 2 - Pairing
 3.	Determine failing tests, why they are failing and fix tests
 4.	There are some improvements which can be made to the tests. Have a look at **InternalServerError.spec*** and determine what can be improved.
 5.	The steps for a test scenario are missing from **InternalServerError.spec**. Implement the scenario using the pre-defined steps and correct values.
+6.	The step implementation is missing for the step **“The body text returned should be <bodyText>”**. Attempt to implement the step.
